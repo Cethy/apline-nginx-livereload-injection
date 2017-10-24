@@ -7,26 +7,25 @@ Nginx reverse proxy based on alpine, injecting livereload js snippet at each req
 This image is designed to be used in association with a livereload container, and a directory to watch (`html/` in the example below).
 
 - Create your `docker-compose.yml` (or copy the one contained in this repo) ;
+```yml
+version: '2'
 
+services:
+  nginx-proxy:
+    image: cethy/apline-nginx-livereload-injection:v1.0
+    ports:
+      - "8008:80"
+    volumes:
+      - "./html:/usr/share/nginx/html"
 
-    version: '2'
-    
-    services:
-      nginx-proxy:
-        image: cethy/apline-nginx-livereload-injection:v1.0
-        ports:
-          - "8008:80"
-        volumes:
-          - "./html:/usr/share/nginx/html"
-    
-      livereload:
-        image: cethy/alpine-livereload:v1.0
-        ports:
-          - "35729:35729"
-        volumes:
-          - ./html:/usr/src/livereload-watch  # OUTPUT_DIR
-        command: "/usr/src/livereload-watch -u true -d --exts 'css,js,html'"
-        
+  livereload:
+    image: cethy/alpine-livereload:v1.0
+    ports:
+      - "35729:35729"
+    volumes:
+      - ./html:/usr/src/livereload-watch  # OUTPUT_DIR
+    command: "/usr/src/livereload-watch -u true -d --exts 'css,js,html'"
+```
 - run `docker-compose` ;
 
     `docker-compose up -d`
