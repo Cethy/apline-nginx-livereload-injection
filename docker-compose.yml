@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  nginx:
+    build: .
+    ports:
+      - "8008:80"
+    volumes:
+      - "./html:/usr/share/nginx/html"
+
+  livereload:
+    image: cethy/alpine-livereload:v1.0
+    ports:
+      - "35729:35729"
+    volumes:
+      - ./html:/usr/src/livereload-watch  # OUTPUT_DIR
+    command: "/usr/src/livereload-watch -u true -d --exts 'css,js,html'"
